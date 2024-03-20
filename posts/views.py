@@ -7,6 +7,16 @@ def home(request):
 
 def posts_list(request):
     posts = Post.objects.all()
+    form = PostForm()
+    if request.method == "POST":
+        form = PostForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                "Dodano nowy Post!"
+            )
     return render(request, 'posts_list.html', {'posts': posts})
 
 def post_details(request, pk):
